@@ -1,0 +1,38 @@
+
+helm version 2>&1
+
+kubectl get pods -A | grep -i chaos 2>&1 
+
+helm repo list 2>&1 
+
+
+helm repo add chaos-mesh https://charts.chaos-mesh.org 
+
+
+
+helm repo update 
+
+
+
+kubectl create namespace chaos-mesh --dry-run=client -o yaml | kubectl apply -f - 
+
+
+kubectl create namespace chaos-mesh --dry-run=client -o yaml | kubectl apply -f -
+
+
+
+helm install chaos-mesh chaos-mesh/chaos-mesh --namespace=chaos-mesh --set chaosDaemon.runtime=containerd --set chaosDaemon.socketPath=/run/containerd/containerd.sock
+
+
+kubectl get pods --namespace chaos-mesh -l app.kubernetes.io/instance=chaos-mesh
+
+
+kubectl get all -n chaos-mesh 
+
+
+
+
+kubectl describe pod -n chaos-mesh -l app.kubernetes.io/instance=chaos-mesh | grep -A 5 "Events:" | head -20
+
+
+

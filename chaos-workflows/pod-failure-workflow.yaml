@@ -1,0 +1,18 @@
+---
+# Pod Failure Chaos Experiment
+# Simulates pod failures by killing pods periodically
+apiVersion: chaos-mesh.org/v1alpha1
+kind: PodChaos
+metadata:
+  name: resume-app-pod-failure
+  namespace: dockerimagesloaded
+spec:
+  action: pod-failure
+  mode: fixed
+  value: "1"
+  selector:
+    namespaces:
+      - dockerimagesloaded
+    labelSelectors:
+      app: resume-app
+  duration: "2m"

@@ -1,0 +1,21 @@
+---
+# CPU Stress Chaos Experiment
+# Applies CPU stress to resume-app pods
+apiVersion: chaos-mesh.org/v1alpha1
+kind: StressChaos
+metadata:
+  name: resume-app-cpu-stress
+  namespace: dockerimagesloaded
+spec:
+  mode: one
+  selector:
+    namespaces:
+      - dockerimagesloaded
+    labelSelectors:
+      app: resume-app
+  stressors:
+    cpu:
+      workers: 2
+      load: 80
+      options: ["--cpu 2", "--timeout 60s"]
+  duration: "1m"
