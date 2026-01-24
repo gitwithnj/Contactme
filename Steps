@@ -1,0 +1,9 @@
+DOcker image is from : docker push docwithnj/resume-app:tagname docker push docwithnj/resume-app:tagname 
+
+script use is like git clone https://github.com/gitwithnj/Contactme.git
+./start.sh to create demo env
+./deploy-resume-app.sh
+
+#####################################
+To delete deployment use stop
+./stop.sh
