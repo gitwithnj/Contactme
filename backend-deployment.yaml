@@ -1,0 +1,274 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shopping-api
+  namespace: shopping-site
+  labels:
+    app: shopping-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: shopping-api
+  template:
+    metadata:
+      labels:
+        app: shopping-api
+    spec:
+      containers:
+      - name: api
+        image: node:18-alpine
+        workingDir: /app
+        command: ["/bin/sh"]
+        args:
+        - -c
+        - |
+          cat > package.json << 'EOF'
+          {
+            "name": "shopping-api",
+            "version": "1.0.0",
+            "dependencies": {
+              "express": "^4.18.2",
+              "pg": "^8.11.0",
+              "redis": "^4.6.7",
+              "cors": "^2.8.5",
+              "dotenv": "^16.3.1"
+            }
+          }
+          EOF
+          npm install
+          cat > server.js << 'EOF'
+          const express = require('express');
+          const { Pool } = require('pg');
+          const redis = require('redis');
+          const cors = require('cors');
+          
+          const app = express();
+          app.use(cors());
+          app.use(express.json());
+          
+          // Database connection
+          const pool = new Pool({
+            host: process.env.DB_HOST,
+            port: process.env.DB_PORT,
+            database: process.env.DB_NAME,
+            user: process.env.DB_USER,
+            password: process.env.DB_PASSWORD,
+          });
+          
+          // Redis connection
+          const redisClient = redis.createClient({
+            socket: {
+              host: process.env.CACHE_HOST,
+              port: process.env.CACHE_PORT
+            }
+          });
+          redisClient.connect().catch(console.error);
+          
+          // Initialize database
+          pool.query(`
+            CREATE TABLE IF NOT EXISTS products (
+              id SERIAL PRIMARY KEY,
+              name VARCHAR(255) NOT NULL,
+              description TEXT,
+              price DECIMAL(10,2) NOT NULL,
+              stock INTEGER DEFAULT 0,
+              created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+            
+            CREATE TABLE IF NOT EXISTS cart (
+              id SERIAL PRIMARY KEY,
+              user_id VARCHAR(255),
+              product_id INTEGER REFERENCES products(id),
+              quantity INTEGER DEFAULT 1,
+              created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+            
+            INSERT INTO products (name, description, price, stock) VALUES
+            ('Laptop', 'High-performance laptop', 999.99, 10),
+            ('Mouse', 'Wireless mouse', 29.99, 50),
+            ('Keyboard', 'Mechanical keyboard', 79.99, 30),
+            ('Monitor', '27-inch 4K monitor', 399.99, 15),
+            ('Headphones', 'Noise-cancelling headphones', 199.99, 25)
+            ON CONFLICT DO NOTHING;
+          `).catch(console.error);
+          
+          // Health check
+          app.get('/health', (req, res) => {
+            res.json({ status: 'healthy', service: 'shopping-api' });
+          });
+          
+          // Get all products
+          app.get('/api/products', async (req, res) => {
+            try {
+              const cacheKey = 'products:all';
+              const cached = await redisClient.get(cacheKey);
+              
+              if (cached) {
+                return res.json(JSON.parse(cached));
+              }
+              
+              const result = await pool.query('SELECT * FROM products ORDER BY id');
+              await redisClient.setEx(cacheKey, 60, JSON.stringify(result.rows));
+              res.json(result.rows);
+            } catch (error) {
+              console.error('Error fetching products:', error);
+              res.status(500).json({ error: 'Internal server error' });
+            }
+          });
+          
+          // Get product by ID
+          app.get('/api/products/:id', async (req, res) => {
+            try {
+              const { id } = req.params;
+              const cacheKey = `product:${id}`;
+              const cached = await redisClient.get(cacheKey);
+              
+              if (cached) {
+                return res.json(JSON.parse(cached));
+              }
+              
+              const result = await pool.query('SELECT * FROM products WHERE id = $1', [id]);
+              if (result.rows.length === 0) {
+                return res.status(404).json({ error: 'Product not found' });
+              }
+              
+              await redisClient.setEx(cacheKey, 60, JSON.stringify(result.rows[0]));
+              res.json(result.rows[0]);
+            } catch (error) {
+              console.error('Error fetching product:', error);
+              res.status(500).json({ error: 'Internal server error' });
+            }
+          });
+          
+          // Add to cart
+          app.post('/api/cart', async (req, res) => {
+            try {
+              const { user_id, product_id, quantity } = req.body;
+              const result = await pool.query(
+                'INSERT INTO cart (user_id, product_id, quantity) VALUES ($1, $2, $3) RETURNING *',
+                [user_id || 'guest', product_id, quantity || 1]
+              );
+              await redisClient.del('cart:*');
+              res.json(result.rows[0]);
+            } catch (error) {
+              console.error('Error adding to cart:', error);
+              res.status(500).json({ error: 'Internal server error' });
+            }
+          });
+          
+          // Get cart
+          app.get('/api/cart/:user_id', async (req, res) => {
+            try {
+              const { user_id } = req.params;
+              const cacheKey = `cart:${user_id}`;
+              const cached = await redisClient.get(cacheKey);
+              
+              if (cached) {
+                return res.json(JSON.parse(cached));
+              }
+              
+              const result = await pool.query(
+                `SELECT c.*, p.name, p.price, p.description 
+                 FROM cart c 
+                 JOIN products p ON c.product_id = p.id 
+                 WHERE c.user_id = $1`,
+                [user_id]
+              );
+              
+              await redisClient.setEx(cacheKey, 30, JSON.stringify(result.rows));
+              res.json(result.rows);
+            } catch (error) {
+              console.error('Error fetching cart:', error);
+              res.status(500).json({ error: 'Internal server error' });
+            }
+          });
+          
+          const PORT = process.env.API_PORT || 8080;
+          app.listen(PORT, '0.0.0.0', () => {
+            console.log(`Shopping API server running on port ${PORT}`);
+          });
+          EOF
+          node server.js
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        env:
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: shopping-config
+              key: DB_HOST
+        - name: DB_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: shopping-config
+              key: DB_PORT
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: shopping-config
+              key: DB_NAME
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: shopping-secrets
+              key: DB_USER
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: shopping-secrets
+              key: DB_PASSWORD
+        - name: CACHE_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: shopping-config
+              key: CACHE_HOST
+        - name: CACHE_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: shopping-config
+              key: CACHE_PORT
+        - name: API_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: shopping-config
+              key: API_PORT
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: shopping-api-service
+  namespace: shopping-site
+  labels:
+    app: shopping-api
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8080
+    targetPort: 8080
+    protocol: TCP
+    name: http
+  selector:
+    app: shopping-api

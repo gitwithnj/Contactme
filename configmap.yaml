@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: shopping-config
+  namespace: shopping-site
+data:
+  # Frontend configuration
+  REACT_APP_API_URL: "http://shopping-api-service:8080"
+  # Backend configuration
+  API_PORT: "8080"
+  CACHE_HOST: "redis-service"
+  CACHE_PORT: "6379"
+  # Database configuration (host only, credentials in Secret)
+  DB_HOST: "postgres-service"
+  DB_PORT: "5432"
+  DB_NAME: "shoppingdb"
