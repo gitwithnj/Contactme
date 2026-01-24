@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nagadev Vishwanath Janganure - Resume</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #e5e5e5 0%, #f0f0f0 50%, #e5e5e5 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            padding: 20px;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(129, 199, 132, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(165, 214, 167, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(200, 230, 201, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            padding: 50px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            border-radius: 10px;
+            position: relative;
+            z-index: 1;
+            border: 2px solid transparent;
+            background-image: 
+                linear-gradient(white, white),
+                linear-gradient(135deg, #81c784, #66bb6a, #a5d6a7);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+        }
+
+        .container::before {
+            content: "";
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, #81c784, #66bb6a, #a5d6a7);
+            border-radius: 10px;
+            z-index: -1;
+            opacity: 0.3;
+            animation: borderGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 30px 0;
+            background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 50%, #c8e6c9 100%);
+            background-size: 200% 200%;
+            animation: headerGradient 8s ease infinite;
+            margin: -50px -50px 40px -50px;
+            border-radius: 10px 10px 0 0;
+            color: #333;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes headerGradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .header h1 {
+            font-size: 1.8em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            letter-spacing: 1px;
+            color: #1b5e20;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+            color: #333;
+            font-size: 0.8em;
+            font-weight: 300;
+        }
+
+        .contact-info a {
+            color: #333;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: all 0.3s;
+            background: rgba(0,0,0,0.05);
+        }
+
+        .contact-info a:hover {
+            background: rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Objective Section */
+        .objective {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            border-left: 5px solid #66bb6a;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .objective h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.0em;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .objective h2:before {
+            content: "🎯";
+            font-size: 1.2em;
+            animation: bounce 2s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        /* Professional Summary */
+        .summary {
+            margin-bottom: 40px;
+        }
+
+        .summary h2 {
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 1.4em;
+            font-weight: 600;
+            border-bottom: 3px solid #66bb6a;
+            padding-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .summary h2:before {
+            content: "💼";
+            font-size: 1.2em;
+            display: inline-block;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .skill-category {
+            background: linear-gradient(135deg, #ffffff 0%, #f1f8e9 100%);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #81c784;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-category::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(129, 199, 132, 0.15), transparent);
+            transition: left 0.5s;
+        }
+
+        .skill-category:hover::before {
+            left: 100%;
+        }
+
+        .skill-category:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 5px 20px rgba(129, 199, 132, 0.3);
+            border-left-width: 6px;
+        }
+
+        .skill-category strong::before {
+            content: "▸ ";
+            color: #66bb6a;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .skill-category strong {
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 12px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .skill-category ul {
+            list-style: disc;
+            padding-left: 20px;
+        }
+
+        .skill-category li {
+            padding: 5px 0;
+        }
+
+        /* Timeline */
+        .timeline-section {
+            margin-bottom: 50px;
+        }
+
+        .timeline-section h2 {
+            color: #2c3e50;
+            margin-bottom: 35px;
+            font-size: 1.4em;
+            font-weight: 600;
+            border-bottom: 3px solid #66bb6a;
+            padding-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .timeline-section h2:before {
+            content: "📅";
+            font-size: 1.0em;
+        }
+
+        .timeline-section.experience-section h2:before {
+            content: "15+ years";
+            font-size: 0.5em;
+            font-weight: 600;
+            color: #66bb6a;
+            background: rgba(129, 199, 132, 0.2);
+            padding: 4px 10px;
+            border-radius: 15px;
+            margin-right: 5px;
+        }
+
+        .timeline-section.education-section h2:before {
+            content: "🎓";
+            font-size: 1.2em;
+            animation: float 3s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline:before {
+            content: "";
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, #81c784 0%, #66bb6a 50%, #a5d6a7 100%);
+            border-radius: 2px;
+            animation: timelinePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes timelinePulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+            padding-left: 40px;
+        }
+
+        .timeline-item:before {
+            content: "";
+            position: absolute;
+            left: 5px;
+            top: 10px;
+            width: 20px;
+            height: 20px;
+            background: #66bb6a;
+            border: 4px solid white;
+            border-radius: 50%;
+            box-shadow: 0 0 0 3px #66bb6a, 0 0 10px rgba(102, 187, 106, 0.5);
+            animation: dotPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes dotPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 3px #66bb6a, 0 0 10px rgba(102, 187, 106, 0.5); }
+            50% { transform: scale(1.2); box-shadow: 0 0 0 5px #66bb6a, 0 0 20px rgba(102, 187, 106, 0.8); }
+        }
+
+        .timeline-date {
+            display: inline-block;
+            color: #66bb6a;
+            font-weight: 600;
+            font-size: 0.7em;
+            background: linear-gradient(135deg, rgba(129, 199, 132, 0.2), rgba(165, 214, 167, 0.2));
+            padding: 5px 12px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            writing-mode: horizontal-tb;
+            position: relative;
+            border: 1px solid rgba(102, 187, 106, 0.4);
+            box-shadow: 0 2px 5px rgba(102, 187, 106, 0.2);
+        }
+
+        .timeline-date::before {
+            content: "📅";
+            margin-right: 5px;
+            font-size: 0.9em;
+        }
+
+        .timeline-content {
+            background: linear-gradient(135deg, #ffffff 0%, #f1f8e9 100%);
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid #81c784;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .timeline-content:hover {
+            transform: translateX(8px) translateY(-2px);
+            box-shadow: 0 8px 25px rgba(129, 199, 132, 0.25);
+            border-left-width: 6px;
+        }
+
+        .timeline-content h3 {
+            color: #2c3e50;
+            margin-bottom: 5px;
+            font-size: 1.0em;
+        }
+
+        .timeline-content .company {
+            color: #2e7d32;
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 0.85em;
+        }
+
+        .timeline-content .role {
+            color: #7f8c8d;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        .timeline-content ul {
+            list-style: disc;
+            padding-left: 20px;
+        }
+
+        .timeline-content li {
+            padding: 5px 0;
+            color: #555;
+        }
+
+        /* Education Table */
+        .education-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .education-table thead {
+            background: linear-gradient(135deg, #a5d6a7 0%, #81c784 100%);
+            color: #2c3e50;
+        }
+
+        .education-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.8em;
+        }
+
+        .education-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            color: #333;
+        }
+
+        .education-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .education-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .education-table .degree {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .education-table .institution {
+            color: #66bb6a;
+            font-weight: 500;
+        }
+
+        .education-table .percentage {
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        /* AI Tools Table */
+        .ai-tools-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(129, 199, 132, 0.1);
+        }
+
+        .ai-tools-table thead {
+            background: linear-gradient(135deg, #a5d6a7 0%, #81c784 100%);
+            color: #2c3e50;
+        }
+
+        .ai-tools-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .ai-tools-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            color: #333;
+        }
+
+        .ai-tools-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .ai-tools-table tbody tr:hover {
+            background: #f1f8e9;
+        }
+
+        .ai-tools-table .tool-name {
+            font-weight: 600;
+            color: #2e7d32;
+        }
+
+        .ai-tools-table .tool-description {
+            color: #555;
+        }
+
+        @keyframes linkRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 1.6em;
+            }
+
+            .timeline-date {
+                position: static;
+                width: auto;
+                text-align: left;
+                margin-bottom: 10px;
+                font-size: 0.65em;
+            }
+
+            .timeline {
+                padding-left: 30px;
+            }
+
+            .timeline:before {
+                left: 10px;
+            }
+
+            .timeline-item:before {
+                left: -20px;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media print {
+            body {
+                background: #e8f5e9;
+                padding: 0;
+            }
+
+            .container {
+                box-shadow: none;
+                background: #e8f5e9;
+                border: 2px solid #000;
+                padding: 30px;
+            }
+
+            .header {
+                background: #e8f5e9 !important;
+                border-bottom: 2px solid #000;
+            }
+
+            .objective {
+                background: #e8f5e9 !important;
+                border: 2px solid #000;
+                border-left: 5px solid #000;
+            }
+
+            .summary {
+                border-bottom: 2px solid #000;
+            }
+
+            .skill-category {
+                background: #e8f5e9 !important;
+                border: 2px solid #000;
+                border-left: 4px solid #000;
+            }
+
+            .timeline-section h2 {
+                border-bottom: 2px solid #000;
+            }
+
+            .timeline:before {
+                background: #000 !important;
+            }
+
+            .timeline-item:before {
+                background: #000 !important;
+                border: 2px solid #000;
+            }
+
+            .timeline-content {
+                background: #e8f5e9 !important;
+                border: 2px solid #000;
+                border-left: 5px solid #000;
+            }
+
+            .timeline-content:hover {
+                transform: none;
+            }
+
+            .timeline-date {
+                background: #fff !important;
+                border: 2px solid #000;
+                color: #000 !important;
+            }
+
+            .education-table {
+                background: #e8f5e9 !important;
+                border: 2px solid #000;
+            }
+
+            .education-table thead {
+                background: #000 !important;
+                color: #e8f5e9 !important;
+            }
+
+            .education-table th,
+            .education-table td {
+                border: 1px solid #000;
+            }
+
+            .education-table tbody tr {
+                background: #e8f5e9 !important;
+            }
+
+            .contact-info a {
+                background: transparent !important;
+                border: 1px solid #000;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Nagadev Vishwanath Janganure</h1>
+            <div class="contact-info">
+                <a href="tel:+919986890806">+91 9986890806</a>
+                <span>|</span>
+                <a href="mailto:pnj9986@gmail.com">pnj9986@gmail.com</a>
+                <span>|</span>
+                <a href="https://www.linkedin.com/in/nj9986890806" target="_blank">LinkedIn Profile</a>
+                <span>|</span>
+                <a href="https://nine986890806.onrender.com/" target="_blank">Link</a>
+            </div>
+        </div>
+
+        <!-- Objective -->
+        <div class="objective">
+            <h2>Objective</h2>
+            <p>Aspiring to grow into a Senior Team Lead or Manager role in Cloud Operations and IT Infrastructure. Currently leading a Cloud Operations in AWS team at Amdocs Pune with a strong background in incident management, infrastructure monitoring, and AWS Cloud technologies. Overall, over 15 + years of IT industry experience with expertise across monitoring tools, automation, and cloud-based deployments.</p>
+        </div>
+
+        <!-- Professional Summary -->
+        <div class="summary">
+            <h2>Professional Summary</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <strong>AWS Cloud</strong>
+                    <ul>
+                        <li>6+ years of experience</li>
+                        <li>Troubleshooting & Deployment</li>
+                        <li>EC2, VPC, EKS, Lambda, RDS, S3</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <strong>Config Management</strong>
+                    <ul>
+                        <li>Ansible</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <strong>Infrastructure as Code</strong>
+                    <ul>
+                        <li>Terraform</li>
+                        <li>CloudFormation</li>
+                        <li>IAC</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <strong>CI/CD & Automation</strong>
+                    <ul>
+                        <li>GitHub Actions</li>
+                        <li>GitLab CI</li>
+                        <li>AWS Code Pipeline</li>
+                        <li>Jenkins, Rundeck</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <strong>Monitoring & Observability</strong>
+                    <ul>
+                        <li>Prometheus, Grafana</li>
+                        <li>CloudWatch, ELK</li>
+                        <li>Micro Focus OVO</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <strong>Container & Orchestration</strong>
+                    <ul>
+                        <li>Kubernetes (EKS)</li>
+                        <li>Docker</li>
+                        <li>Podman</li>
+                        <li>Container orchestration</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <strong>Scripting</strong>
+                    <ul>
+                        <li>Bash scripting</li>
+                        <li>GitLab, Bitbucket</li>
+                        <li>Python</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <strong>Best Practices</strong>
+                    <ul>
+                        <li>Security & Compliance</li>
+                        <li>Cost optimization</li>
+                        <li>High Availability design</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <strong>AI Tools</strong>
+                    <ul>
+                        <li>Cursor: AI chat, Composer mode</li>
+                        <li>GitHub Copilot: Code suggestions</li>
+                        <li>ChatGPT: Problem solving</li>
+                    </ul>
+                </div>
+            </div>
+            <div style="margin-top: 30px; padding: 20px; background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-radius: 8px; border-left: 4px solid #66bb6a; position: relative; overflow: hidden; box-shadow: 0 3px 10px rgba(129, 199, 132, 0.15);">
+                <div style="position: absolute; top: -50%; right: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(129, 199, 132, 0.15) 0%, transparent 70%); animation: linkRotate 10s linear infinite;"></div>
+                <strong style="color: #2c3e50; font-size: 1.1em;"><a href="https://nine986890806.onrender.com/" target="_blank" style="color: #2c3e50; text-decoration: none;">Link</a></strong>
+            </div>
+        </div>
+
+        <!-- Professional Experience Timeline -->
+        <div class="timeline-section experience-section">
+            <h2>Professional Experience</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">Total 13 Years 10 Months</div>
+                        <div class="company">Amdocs, Pune</div>
+                        <h3>Technical Analyst Team Lead | Vindicia</h3>
+                        <ul>
+                            <li>Acted as Incident Manager for major and critical incidents ensuring timely resolution and communication. Acting SRE Lead to get the cloud-based applications up and running.</li>
+                            <li>Led technical bridge calls and coordinated with cross-functional teams to resolve high-priority incidents.</li>
+                            <li>Managed incident lifecycle including logging, classification, investigation, diagnosis, and resolution.</li>
+                            <li>Ensured compliance with SLA timelines and documented root cause analysis (RCA) for major incidents.</li>
+                            <li>Provided leadership during crisis situations and maintained communication with stakeholders and leadership teams.</li>
+                            <li>Lead cloud operations for deployment, automation, and incident response on AWS.</li>
+                            <li>Managed production infrastructure with a focus on availability, scalability, and cost-efficiency.</li>
+                            <li>Designed and implemented infrastructure monitoring using Prometheus, Grafana, and CloudWatch.</li>
+                            <li>Automated backup, alerts, and deployments using Jenkins, Rundeck, and AWS tools.</li>
+                            <li>Worked on EC2 provisioning, IAM management, SSL deployments, and DR snapshots.</li>
+                            <li>Maintained technical documentation and conducted Well-Architected Reviews.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2019 – 2022</div>
+                        <div class="company">Amdocs, Pune</div>
+                        <h3>Technology Specialist</h3>
+                        <ul>
+                            <li>AWS Platform Expertise - EC2, VPC, EKS, Lambda, RDS, S3, and more</li>
+                            <li>Kubernetes & Containers - EKS administration, container orchestration</li>
+                            <li>Infrastructure as Code - Terraform, CloudFormation, IAC</li>
+                            <li>Monitoring & Observability - CloudWatch, Prometheus, Grafana, ELK</li>
+                            <li>CI/CD & Automation - Pipeline design, Git, deployment strategies</li>
+                            <li>Reliability Engineering - HA design, chaos engineering, performance</li>
+                            <li>Security - IAM, encryption, compliance, security tools</li>
+                            <li>Incident Management - On-call, post-mortems, response procedures</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2012 – 2019</div>
+                        <div class="company">Amdocs, Pune</div>
+                        <h3>Technology Monitoring Engineer</h3>
+                        <ul>
+                            <li>Administered HP Operations Manager, SiteScope, and BSM tools for IT monitoring.</li>
+                            <li>Integrated third-party tools with Micro Focus Ops Bridge Suite and configured SNMP alerts.</li>
+                            <li>Installed and configured OBM in standalone mode with high availability.</li>
+                            <li>Led audits, requirement gathering, solution documentation, and team deliverables.</li>
+                            <li>Supported over 10,000 servers and delivered monitoring solutions using SCOM, NNM, and BPM.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">April 2010 to Dec 2011</div>
+                        <div class="company">Magna Infotech Pvt Ltd</div>
+                        <h3>SSME – IT Infrastructure Support</h3>
+                        <ul>
+                            <li>Maintained uptime and monitored alerts across Linux and Windows environments.</li>
+                            <li>Ensured server stability and handled P1 escalations and backup operations.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">Nov 2009 - April 2010</div>
+                        <p>Planning for higher studies</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">Mar 2009 – Oct 2009</div>
+                        <div class="company">Dell International Services, Bangalore</div>
+                        <h3>IT Support Associate</h3>
+                        <ul>
+                            <li>Provided application and IT tech support.</li>
+                            <li>Managed bridge calls, technical escalations, and cross-team coordination.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Education Table -->
+        <div class="timeline-section education-section">
+            <h2>Education</h2>
+            <table class="education-table">
+                <thead>
+                    <tr>
+                        <th>Degree/Qualification</th>
+                        <th>Institution</th>
+                        <th>Year</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="degree">Bachelor of Engineering</td>
+                        <td class="institution">UVCE, Bangalore</td>
+                        <td>2005 – 2009</td>
+                    </tr>
+                    <tr>
+                        <td class="degree">12th Standard</td>
+                        <td class="institution">GSS Belgaum</td>
+                        <td>2003 – 2005</td>
+                    </tr>
+                    <tr>
+                        <td class="degree">10th Standard</td>
+                        <td class="institution">St. Paul's High School, Belgaum</td>
+                        <td>2002 - 2003</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</body>
+</html>
+
