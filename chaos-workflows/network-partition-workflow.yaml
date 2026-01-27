@@ -1,0 +1,18 @@
+---
+# Network Partition Chaos Experiment
+# Partitions network between resume-app pods
+apiVersion: chaos-mesh.org/v1alpha1
+kind: NetworkChaos
+metadata:
+  name: resume-app-network-partition
+  namespace: dockerimagesloaded
+spec:
+  action: partition
+  mode: one
+  selector:
+    namespaces:
+      - dockerimagesloaded
+    labelSelectors:
+      app: resume-app
+  direction: both
+  duration: "1m"

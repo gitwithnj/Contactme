@@ -1,0 +1,20 @@
+---
+# Network Packet Loss Chaos Experiment
+# Introduces packet loss to resume-app pods
+apiVersion: chaos-mesh.org/v1alpha1
+kind: NetworkChaos
+metadata:
+  name: resume-app-network-loss
+  namespace: dockerimagesloaded
+spec:
+  action: loss
+  mode: one
+  selector:
+    namespaces:
+      - dockerimagesloaded
+    labelSelectors:
+      app: resume-app
+  loss:
+    loss: "10"
+    correlation: "25"
+  duration: "30s"

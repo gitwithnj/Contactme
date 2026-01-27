@@ -1,0 +1,249 @@
+---
+# ServiceAccount for Chaos Mesh experiments
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: chaos-mesh-experimenter
+  namespace: chaos-mesh
+---
+# ClusterRole for Chaos Mesh - allows creating and managing chaos experiments
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: chaos-mesh-experimenter
+rules:
+  # Chaos Mesh CRDs
+  - apiGroups:
+      - chaos-mesh.org
+    resources:
+      - "*"
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+      - delete
+  # Pod operations for pod chaos
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+      - pods/status
+      - pods/log
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+      - delete
+  # Deployment operations
+  - apiGroups:
+      - apps
+    resources:
+      - deployments
+      - deployments/status
+      - replicasets
+      - replicasets/status
+    verbs:
+      - get
+      - list
+      - watch
+      - update
+      - patch
+  # Service operations for network chaos
+  - apiGroups:
+      - ""
+    resources:
+      - services
+      - endpoints
+    verbs:
+      - get
+      - list
+      - watch
+  # Node operations for node chaos
+  - apiGroups:
+      - ""
+    resources:
+      - nodes
+    verbs:
+      - get
+      - list
+      - watch
+      - patch
+  # Events for monitoring
+  - apiGroups:
+      - ""
+    resources:
+      - events
+    verbs:
+      - create
+      - patch
+  # ConfigMap and Secret for chaos experiments
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+      - secrets
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+---
+# ClusterRoleBinding - binds the ServiceAccount to the ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: chaos-mesh-experimenter
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: chaos-mesh-experimenter
+subjects:
+  - kind: ServiceAccount
+    name: chaos-mesh-experimenter
+    namespace: chaos-mesh
+---
+# Role for namespace-specific chaos experiments (for dockerimagesloaded namespace)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: chaos-mesh-namespace-access
+  namespace: dockerimagesloaded
+rules:
+  # Pod operations
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+      - pods/status
+      - pods/log
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+      - delete
+  # Deployment operations
+  - apiGroups:
+      - apps
+    resources:
+      - deployments
+      - deployments/status
+      - replicasets
+    verbs:
+      - get
+      - list
+      - watch
+      - update
+      - patch
+  # Service operations
+  - apiGroups:
+      - ""
+    resources:
+      - services
+      - endpoints
+    verbs:
+      - get
+      - list
+      - watch
+  # Events
+  - apiGroups:
+      - ""
+    resources:
+      - events
+    verbs:
+      - create
+      - patch
+---
+# RoleBinding for namespace-specific access
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: chaos-mesh-namespace-access
+  namespace: dockerimagesloaded
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: chaos-mesh-namespace-access
+subjects:
+  - kind: ServiceAccount
+    name: chaos-mesh-experimenter
+    namespace: chaos-mesh
+---
+# Role for default namespace chaos experiments
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: chaos-mesh-namespace-access
+  namespace: default
+rules:
+  # Pod operations
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+      - pods/status
+      - pods/log
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+      - delete
+  # Deployment operations
+  - apiGroups:
+      - apps
+    resources:
+      - deployments
+      - deployments/status
+      - replicasets
+    verbs:
+      - get
+      - list
+      - watch
+      - update
+      - patch
+  # Service operations
+  - apiGroups:
+      - ""
+    resources:
+      - services
+      - endpoints
+    verbs:
+      - get
+      - list
+      - watch
+  # Events
+  - apiGroups:
+      - ""
+    resources:
+      - events
+    verbs:
+      - create
+      - patch
+---
+# RoleBinding for default namespace
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: chaos-mesh-namespace-access
+  namespace: default
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: chaos-mesh-namespace-access
+subjects:
+  - kind: ServiceAccount
+    name: chaos-mesh-experimenter
+    namespace: chaos-mesh

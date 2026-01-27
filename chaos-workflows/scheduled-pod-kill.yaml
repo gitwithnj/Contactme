@@ -1,0 +1,21 @@
+---
+# Scheduled Pod Kill Chaos Experiment
+# Runs pod kill every 5 minutes
+apiVersion: chaos-mesh.org/v1alpha1
+kind: Schedule
+metadata:
+  name: scheduled-resume-app-pod-kill
+  namespace: dockerimagesloaded
+spec:
+  schedule: "*/5 * * * *"
+  historyLimit: 2
+  concurrencyPolicy: Allow
+  type: PodChaos
+  podChaos:
+    action: pod-kill
+    mode: one
+    selector:
+      namespaces:
+        - dockerimagesloaded
+      labelSelectors:
+        app: resume-app

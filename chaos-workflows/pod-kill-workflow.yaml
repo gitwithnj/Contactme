@@ -1,0 +1,16 @@
+---
+# Pod Kill Chaos Experiment
+# Kills one pod at a time from the resume-app deployment
+apiVersion: chaos-mesh.org/v1alpha1
+kind: PodChaos
+metadata:
+  name: resume-app-pod-kill
+  namespace: dockerimagesloaded
+spec:
+  action: pod-kill
+  mode: one
+  selector:
+    namespaces:
+      - dockerimagesloaded
+    labelSelectors:
+      app: resume-app
