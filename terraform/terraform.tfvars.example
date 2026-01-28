@@ -1,0 +1,16 @@
+# Example Terraform variables for Minikube
+# Copy to terraform.tfvars and adjust as needed
+
+# Leave empty to use default kubeconfig (KUBECONFIG or ~/.kube/config)
+kube_config_path = ""
+
+# Set to false to skip Chaos Mesh and chaos workflows
+deploy_chaos_mesh      = true
+deploy_chaos_workflows = true
+
+# Chaos Mesh Helm chart version
+chaos_mesh_helm_chart_version = "2.8.1"
+
+# For Minikube with containerd (default with podman driver)
+chaos_daemon_runtime     = "containerd"
+chaos_daemon_socket_path = "/run/containerd/containerd.sock"
